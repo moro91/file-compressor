@@ -1,1 +1,208 @@
-index.html [generated with web_code_canvas tool]
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فشرده‌ساز و کاهش حجم آنلاین فایل | File Compressor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0b0f19',
+                        cardBg: 'rgba(17, 24, 39, 0.75)',
+                        neonCyan: '#00f3ff',
+                        neonPurple: '#a855f7',
+                        neonPink: '#ff007f'
+                    },
+                    fontFamily: {
+                        vazir: ['Vazirmatn', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #0b0f19;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        .glow-border {
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.15);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+        .glow-border:hover {
+            box-shadow: 0 0 35px rgba(0, 243, 255, 0.3);
+            border-color: rgba(0, 243, 255, 0.5);
+        }
+        .glass {
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(12px);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #00f3ff 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 glass border-b border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center text-white shadow-lg">
+                    <i class="fa-solid fa-file-zipper text-xl"></i>
+                </div>
+                <span class="text-2xl font-black gradient-text tracking-wide">FileCompressPro</span>
+            </div>
+            <div class="text-xs text-slate-400 bg-slate-800/80 px-3 py-1.5 rounded-full border border-slate-700">
+                <i class="fa-solid fa-bolt text-cyan-400 ml-1"></i> فشرده‌سازی سریع و امن
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 py-12 flex-1 w-full">
+        <!-- Hero Section -->
+        <div class="text-center mb-10">
+            <h1 class="text-3xl sm:text-5xl font-extrabold mb-4">کاهش حجم هوشمند <span class="gradient-text">انواع فایل</span></h1>
+            <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">
+                ویدیو، عکس، اسناد Word، پاورپوینت، اکسل، PDF و فایل‌های صوتی خود را بدون افت کیفیت محسوس فشرده کنید.
+            </p>
+        </div>
+
+        <!-- Compressor Box -->
+        <div class="glass rounded-2xl p-6 sm:p-10 glow-border transition-all duration-300">
+            <!-- Drop Zone -->
+            <div id="dropZone" class="border-2 border-dashed border-cyan-500/40 hover:border-cyan-400 rounded-xl p-8 sm:p-12 text-center cursor-pointer transition-all bg-slate-900/40 hover:bg-slate-900/80">
+                <input type="file" id="fileInput" class="hidden" multiple>
+                <div class="w-16 h-16 bg-cyan-500/10 text-cyan-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                </div>
+                <h3 class="text-lg font-bold mb-2">فایل‌های خود را اینجا بکشید و رها کنید</h3>
+                <p class="text-xs text-slate-400 mb-4">پشتیبانی از MP4, PNG, JPG, PDF, DOCX, PPTX, XLSX, MP3</p>
+                <button onclick="document.getElementById('fileInput').click()" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-bold px-6 py-2.5 rounded-xl shadow-lg transition text-sm">
+                    انتخاب فایل از کامپیوتر
+                </button>
+            </div>
+
+            <!-- Compression Options -->
+            <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                    <label class="block text-xs text-slate-400 mb-2">میزان فشرده‌‌سازی</label>
+                    <select id="compLevel" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-400">
+                        <option value="low">کم (حفظ حداکثر کیفیت)</option>
+                        <option value="medium" selected>متوسط (پیشنهادی)</option>
+                        <option value="high">حداکثر (بیشترین کاهش حجم)</option>
+                    </select>
+                </div>
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                    <label class="block text-xs text-slate-400 mb-2">فرمت خروجی</label>
+                    <select id="outFormat" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-400">
+                        <option value="auto">خودکار (همسان با فایل اصلی)</option>
+                        <option value="zip">آرشیو ZIP</option>
+                    </select>
+                </div>
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 flex items-end">
+                    <button id="startBtn" onclick="processFiles()" class="w-full bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-black py-2.5 rounded-lg transition shadow-lg shadow-cyan-500/20 text-sm">
+                        شروع فشرده‌سازی
+                    </button>
+                </div>
+            </div>
+
+            <!-- Progress & Results Area -->
+            <div id="resultArea" class="mt-8 hidden">
+                <h4 class="text-sm font-bold text-slate-300 mb-4">وضعیت پردازش:</h4>
+                <div id="fileList" class="space-y-4"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800/80 py-6 text-center text-xs text-slate-500">
+        <p>© 2026 FileCompressPro - تمامی حقوق محفوظ است.</p>
+    </footer>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const resultArea = document.getElementById('resultArea');
+        const fileList = document.getElementById('fileList');
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-cyan-400', 'bg-slate-900/80');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('border-cyan-400', 'bg-slate-900/80');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-cyan-400', 'bg-slate-900/80');
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                processFiles();
+            }
+        });
+
+        function processFiles() {
+            const files = fileInput.files;
+            if (!files.length) {
+                alert('لطفاً ابتدا یک یا چند فایل انتخاب کنید.');
+                return;
+            }
+
+            resultArea.classList.remove('hidden');
+            fileList.innerHTML = '';
+
+            Array.from(files).forEach((file, index) => {
+                const origSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                const compRatio = 0.4 + Math.random() * 0.3; // شبیه‌سازی فشرده‌سازی بین ۳۰٪ تا ۶۰٪
+                const newSizeMB = (origSizeMB * compRatio).toFixed(2);
+                const savedPercent = Math.round((1 - compRatio) * 100);
+
+                const item = document.createElement('div');
+                item.className = "bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col gap-3";
+                item.innerHTML = `
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="font-semibold text-slate-200 truncate max-w-xs"><i class="fa-regular fa-file ml-2 text-cyan-400"></i>${file.name}</span>
+                        <span class="text-xs text-slate-400">${origSizeMB} MB ➔ <span class="text-green-400 font-bold">${newSizeMB} MB</span> (${savedPercent}% کاهش)</span>
+                    </div>
+                    <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                        <div id="bar-${index}" class="bg-gradient-to-r from-cyan-400 to-purple-500 h-2 rounded-full w-0 transition-all duration-300"></div>
+                    </div>
+                    <div id="status-${index}" class="flex justify-between items-center text-xs">
+                        <span class="text-slate-400">در حال فشرده‌سازی...</span>
+                    </div>
+                `;
+                fileList.appendChild(item);
+
+                // شبیه‌سازی پیشرفت بارگذاری
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += Math.floor(Math.random() * 25) + 10;
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(interval);
+                        document.getElementById(`status-${index}`).innerHTML = `
+                            <span class="text-green-400"><i class="fa-solid fa-check ml-1"></i>آماده دانلود</span>
+                            <a href="#" onclick="alert('دانلود شبیه‌سازی شد!'); return false;" class="bg-slate-800 hover:bg-slate-700 text-cyan-400 px-3 py-1 rounded border border-slate-700 text-xs transition">دانلود فایل</a>
+                        `;
+                    }
+                    document.getElementById(`bar-${index}`).style.width = `${progress}%`;
+                }, 300);
+            });
+        }
+    </script>
+</body>
+</html>
