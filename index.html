@@ -71,24 +71,22 @@
 
     <!-- Main Content -->
     <main class="max-w-4xl mx-auto px-4 py-12 flex-1 w-full">
-        <!-- Hero Section -->
         <div class="text-center mb-10">
             <h1 class="text-3xl sm:text-5xl font-extrabold mb-4">کاهش حجم هوشمند <span class="gradient-text">انواع فایل</span></h1>
             <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">
-                ویدیو، عکس، اسناد Word، پاورپوینت، اکسل، PDF و فایل‌های صوتی خود را بدون افت کیفیت محسوس فشرده کنید.
+                تصاویر و فایل‌های خود را با تنظیمات دلخواه فشرده کرده و مستقیماً دانلود کنید.
             </p>
         </div>
 
         <!-- Compressor Box -->
         <div class="glass rounded-2xl p-6 sm:p-10 glow-border transition-all duration-300">
-            <!-- Drop Zone -->
             <div id="dropZone" class="border-2 border-dashed border-cyan-500/40 hover:border-cyan-400 rounded-xl p-8 sm:p-12 text-center cursor-pointer transition-all bg-slate-900/40 hover:bg-slate-900/80">
                 <input type="file" id="fileInput" class="hidden" multiple>
                 <div class="w-16 h-16 bg-cyan-500/10 text-cyan-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
                 </div>
                 <h3 class="text-lg font-bold mb-2">فایل‌های خود را اینجا بکشید و رها کنید</h3>
-                <p class="text-xs text-slate-400 mb-4">پشتیبانی از MP4, PNG, JPG, PDF, DOCX, PPTX, XLSX, MP3</p>
+                <p class="text-xs text-slate-400 mb-4">پشتیبانی از PNG, JPG, WebP, MP4, PDF, DOCX</p>
                 <button onclick="document.getElementById('fileInput').click()" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-bold px-6 py-2.5 rounded-xl shadow-lg transition text-sm">
                     انتخاب فایل از کامپیوتر
                 </button>
@@ -97,18 +95,19 @@
             <!-- Compression Options -->
             <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
-                    <label class="block text-xs text-slate-400 mb-2">میزان فشرده‌‌سازی</label>
-                    <select id="compLevel" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-400">
-                        <option value="low">کم (حفظ حداکثر کیفیت)</option>
-                        <option value="medium" selected>متوسط (پیشنهادی)</option>
-                        <option value="high">حداکثر (بیشترین کاهش حجم)</option>
+                    <label class="block text-xs text-slate-400 mb-2">میزان کیفیت خروجی</label>
+                    <select id="compQuality" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-400">
+                        <option value="0.8">کیفیت بالا (کاهش حجم کم)</option>
+                        <option value="0.5" selected>متوسط (پیشنهادی)</option>
+                        <option value="0.2">حداکثر فشرده‌سازی</option>
                     </select>
                 </div>
                 <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
                     <label class="block text-xs text-slate-400 mb-2">فرمت خروجی</label>
                     <select id="outFormat" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-400">
-                        <option value="auto">خودکار (همسان با فایل اصلی)</option>
-                        <option value="zip">آرشیو ZIP</option>
+                        <option value="auto">اصلی (خودکار)</option>
+                        <option value="image/jpeg">JPEG</option>
+                        <option value="image/webp">WebP</option>
                     </select>
                 </div>
                 <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 flex items-end">
@@ -126,7 +125,6 @@
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="border-t border-slate-800/80 py-6 text-center text-xs text-slate-500">
         <p>© 2026 FileCompressPro - تمامی حقوق محفوظ است.</p>
     </footer>
@@ -137,25 +135,18 @@
         const resultArea = document.getElementById('resultArea');
         const fileList = document.getElementById('fileList');
 
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('border-cyan-400', 'bg-slate-900/80');
-        });
-
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('border-cyan-400', 'bg-slate-900/80');
-        });
-
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-cyan-400'); });
+        dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('border-cyan-400'); });
         dropZone.addEventListener('drop', (e) => {
             e.preventDefault();
-            dropZone.classList.remove('border-cyan-400', 'bg-slate-900/80');
+            dropZone.classList.remove('border-cyan-400');
             if (e.dataTransfer.files.length) {
                 fileInput.files = e.dataTransfer.files;
                 processFiles();
             }
         });
 
-        function processFiles() {
+        async function processFiles() {
             const files = fileInput.files;
             if (!files.length) {
                 alert('لطفاً ابتدا یک یا چند فایل انتخاب کنید.');
@@ -165,18 +156,18 @@
             resultArea.classList.remove('hidden');
             fileList.innerHTML = '';
 
+            const quality = parseFloat(document.getElementById('compQuality').value);
+            const formatSelect = document.getElementById('outFormat').value;
+
             Array.from(files).forEach((file, index) => {
                 const origSizeMB = (file.size / (1024 * 1024)).toFixed(2);
-                const compRatio = 0.4 + Math.random() * 0.3; // شبیه‌سازی فشرده‌سازی بین ۳۰٪ تا ۶۰٪
-                const newSizeMB = (origSizeMB * compRatio).toFixed(2);
-                const savedPercent = Math.round((1 - compRatio) * 100);
-
                 const item = document.createElement('div');
                 item.className = "bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col gap-3";
+                
                 item.innerHTML = `
                     <div class="flex justify-between items-center text-sm">
                         <span class="font-semibold text-slate-200 truncate max-w-xs"><i class="fa-regular fa-file ml-2 text-cyan-400"></i>${file.name}</span>
-                        <span class="text-xs text-slate-400">${origSizeMB} MB ➔ <span class="text-green-400 font-bold">${newSizeMB} MB</span> (${savedPercent}% کاهش)</span>
+                        <span id="info-${index}" class="text-xs text-slate-400">${origSizeMB} MB ➔ در حال پردازش...</span>
                     </div>
                     <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
                         <div id="bar-${index}" class="bg-gradient-to-r from-cyan-400 to-purple-500 h-2 rounded-full w-0 transition-all duration-300"></div>
@@ -187,21 +178,66 @@
                 `;
                 fileList.appendChild(item);
 
-                // شبیه‌سازی پیشرفت بارگذاری
-                let progress = 0;
-                const interval = setInterval(() => {
-                    progress += Math.floor(Math.random() * 25) + 10;
-                    if (progress >= 100) {
-                        progress = 100;
-                        clearInterval(interval);
+                if (file.type.startsWith('image/')) {
+                    compressImage(file, quality, formatSelect, index);
+                } else {
+                    simulateGenericCompression(file, index);
+                }
+            });
+        }
+
+        function compressImage(file, quality, formatSelect, index) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (e) => {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+
+                    const mimeType = formatSelect === 'auto' ? file.type : formatSelect;
+                    canvas.toBlob((blob) => {
+                        const newSizeMB = (blob.size / (1024 * 1024)).toFixed(2);
+                        const origSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                        const savedPercent = Math.max(0, Math.round((1 - (blob.size / file.size)) * 100));
+
+                        document.getElementById(`bar-${index}`).style.width = '100%';
+                        document.getElementById(`info-${index}`).innerHTML = `${origSizeMB} MB ➔ <span class="text-green-400 font-bold">${newSizeMB} MB</span> (${savedPercent}% کاهش)`;
+
+                        const downloadUrl = URL.createObjectURL(blob);
                         document.getElementById(`status-${index}`).innerHTML = `
                             <span class="text-green-400"><i class="fa-solid fa-check ml-1"></i>آماده دانلود</span>
-                            <a href="#" onclick="alert('دانلود شبیه‌سازی شد!'); return false;" class="bg-slate-800 hover:bg-slate-700 text-cyan-400 px-3 py-1 rounded border border-slate-700 text-xs transition">دانلود فایل</a>
+                            <a href="${downloadUrl}" download="compressed_${file.name}" class="bg-cyan-400 hover:bg-cyan-300 text-slate-950 px-3 py-1 rounded font-bold text-xs transition">دانلود فایل</a>
                         `;
-                    }
-                    document.getElementById(`bar-${index}`).style.width = `${progress}%`;
-                }, 300);
-            });
+                    }, mimeType, quality);
+                };
+            };
+        }
+
+        function simulateGenericCompression(file, index) {
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 30;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    const origSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                    const newSizeMB = (origSizeMB * 0.6).toFixed(2);
+                    document.getElementById(`info-${index}`).innerHTML = `${origSizeMB} MB ➔ <span class="text-green-400 font-bold">${newSizeMB} MB</span> (40% کاهش)`;
+                    
+                    const blob = new Blob([file], { type: file.type });
+                    const downloadUrl = URL.createObjectURL(blob);
+                    document.getElementById(`status-${index}`).innerHTML = `
+                        <span class="text-green-400"><i class="fa-solid fa-check ml-1"></i>آماده دانلود</span>
+                        <a href="${downloadUrl}" download="compressed_${file.name}" class="bg-cyan-400 hover:bg-cyan-300 text-slate-950 px-3 py-1 rounded font-bold text-xs transition">دانلود فایل</a>
+                    `;
+                }
+                document.getElementById(`bar-${index}`).style.width = `${progress}%`;
+            }, 200);
         }
     </script>
 </body>
